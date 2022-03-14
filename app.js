@@ -34,6 +34,10 @@ app.post('/api/send-push-subscription', (req, res) => {
 
 app.post('/api/send-push-notification', (req, res) => {
 
+  if(req.body.payload!=null)
+  {
+    payload.notification.title = req.body.payload.notification.title
+  }
   pool.query('SELECT * FROM Devices', (error, result) => {
     if (error) throw error;
     console.log(result)
@@ -60,14 +64,14 @@ app.post('/api/send-push-notification', (req, res) => {
 //   }
 // }
 
-const payload = {
+var payload = {
   notification: {
     data: {
       url: 'abc.com',
       action: 'custom action to perform',
       extras: {}
     },
-    title: 'Push Noti To PWA From Server',
+    title: 'Thông báo khẩn',
     vibrate: [100, 50, 100]
   },
 };
