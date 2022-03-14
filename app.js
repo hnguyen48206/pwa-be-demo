@@ -9,7 +9,7 @@ const app = express();
 
 const VAPIDKEY = { "publicKey": "BD51N85VL71eGHTwxXXdb7YtdZQnusxPMUA19K_VqESUCNfxiZApeUToIJwvyJ7ObF7Oetof0YuURrk1BydPr5w", "privateKey": "iw2teOL_xzC9m5RnI3MPyHtMp0EUGwoA0hrunDU1iS0" }
 const PORT = process.env.PORT || 3000;
-
+const HOST = 'https://pwa-be-demo.herokuapp.com/'
 app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 
@@ -39,7 +39,7 @@ app.post('/api/send-push-notification', (req, res) => {
     console.log(result)
     webpush.setVapidDetails('mailto:hnguyen48206@gmail.com', VAPIDKEY.publicKey, VAPIDKEY.privateKey);
     for (let i = 0; i < result.length; ++i) {
-      webpush.sendNotification(JSON.parse(base64.decode(result[i].Extras)), JSON.stringify(payLoad)).then(res => {
+      webpush.sendNotification(JSON.parse(base64.decode(result[i].Extras)), JSON.stringify(req.body.payLoad!=null?req.body.payLoad:payLoad)).then(res => {
         console.log(res)
       })
         .catch(err => {
@@ -63,7 +63,7 @@ app.post('/api/send-push-notification', (req, res) => {
 const payLoad = {
   notification: {
     data: {
-      url: 'http://localhost:8080/home',
+      url: 'abc.com',
       action: 'custom action to perform',
       extras: {}
     },
