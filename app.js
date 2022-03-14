@@ -35,9 +35,9 @@ app.post('/api/send-push-subscription', (req, res) => {
 app.post('/api/send-push-notification', (req, res) => {
 
   if (req.body.payload != null) {
-    payload.notification.title = req.body.payload.notification.title
-    payload.notification.data = req.body.payload.notification.data
-    payload.notification.body = req.body.payload.notification.body
+    payload.notification.title = req.body.title
+    payload.notification.data = req.body.data
+    payload.notification.body = req.body.body
   }
 
   console.log(payload)
