@@ -8,11 +8,12 @@ const base64 = require('base-64');
 const app = express();
 
 const VAPIDKEY = { "publicKey": "BD51N85VL71eGHTwxXXdb7YtdZQnusxPMUA19K_VqESUCNfxiZApeUToIJwvyJ7ObF7Oetof0YuURrk1BydPr5w", "privateKey": "iw2teOL_xzC9m5RnI3MPyHtMp0EUGwoA0hrunDU1iS0" }
+const PORT = process.env.PORT || 3000;
 
 app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log('The server started on port 3000 !!!!!!');
 });
 
