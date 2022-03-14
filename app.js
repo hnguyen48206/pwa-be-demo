@@ -28,14 +28,13 @@ app.post('/api/send-push-subscription', (req, res) => {
   pool.query(`INSERT INTO Devices (Extras) VALUES ("${base64.encode(JSON.stringify(sub))}")`, (error, result) => {
     if (error) throw error
     else
-    res.send('Save sub ok')
-    });  
+      res.send('Save sub ok')
+  });
 });
 
 app.post('/api/send-push-notification', (req, res) => {
 
-  if(req.body.payload!=null)
-  {
+  if (req.body.payload != null) {
     payload.notification.title = req.body.payload.notification.title
     payload.notification.data = req.body.payload.notification.data
     payload.notification.body = req.body.payload.notification.body
@@ -76,7 +75,14 @@ var payload = {
       extras: {}
     },
     title: 'Thông báo khẩn',
-    vibrate: [100, 50, 100]
+    body: 'Anytime, any where',
+    icon: 'assets/icons/icon-128x128.png',
+    badge: 'assets/icons/icon-128x128.png',
+    vibrate: [100, 50, 100],
+    priority: 'max',
+    android: {
+      priority: 'max'
+    }
   },
 };
 
