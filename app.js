@@ -38,6 +38,7 @@ app.post('/api/send-push-notification', (req, res) => {
   {
     payload.notification.title = req.body.payload.notification.title
     payload.notification.data = req.body.payload.notification.data
+    payload.notification.body = req.body.payload.notification.body
   }
 
   console.log(payload)
