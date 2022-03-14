@@ -39,7 +39,7 @@ app.post('/api/send-push-notification', (req, res) => {
     console.log(result)
     webpush.setVapidDetails('mailto:hnguyen48206@gmail.com', VAPIDKEY.publicKey, VAPIDKEY.privateKey);
     for (let i = 0; i < result.length; ++i) {
-      webpush.sendNotification(JSON.parse(base64.decode(result[i].Extras)), JSON.stringify(req.body.payLoad!=null?req.body.payLoad:payLoad)).then(res => {
+      webpush.sendNotification(JSON.parse(base64.decode(result[i].Extras)), JSON.stringify(req.body.payload!=null?req.body.payLoad:payload)).then(res => {
         console.log(res)
       })
         .catch(err => {
@@ -60,7 +60,7 @@ app.post('/api/send-push-notification', (req, res) => {
 //   }
 // }
 
-const payLoad = {
+const payload = {
   notification: {
     data: {
       url: 'abc.com',
