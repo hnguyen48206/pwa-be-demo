@@ -37,7 +37,10 @@ app.post('/api/send-push-notification', (req, res) => {
   if(req.body.payload!=null)
   {
     payload.notification.title = req.body.payload.notification.title
+    payload.notification.data = req.body.payload.notification.data
   }
+
+  console.log(payload)
   pool.query('SELECT * FROM Devices', (error, result) => {
     if (error) throw error;
     console.log(result)
