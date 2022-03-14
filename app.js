@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.post('/api/send-push-subscription', (req, res) => {
   const sub = req.body.sub;
-  pool.query(`INSERT INTO Devices (Extras) VALUES ("${base64.encode(JSON.stringify(sub))}")`, (error, result) => {
+  pool.query(`INSERT INTO Devices (Extras, UUID) VALUES ("${base64.encode(JSON.stringify(sub))}", "${req.body.uuid}")`, (error, result) => {
     if (error) throw error
     else
       res.send('Save sub ok')
