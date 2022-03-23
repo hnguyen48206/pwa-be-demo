@@ -2,9 +2,9 @@ const mysql = require('mysql');
 
 // Set database connection credentials
 const config = {
-    host: 'sql6.freemysqlhosting.net',
-    user: 'sql6478318',
-    password: 'tE4wp4vCZF',
+    host: 'db4free.net',
+    user: 'vnptit2',
+    password: 'Vnpt@123',
     database: 'sql6478318',
 };
 

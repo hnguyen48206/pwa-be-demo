@@ -2,7 +2,8 @@ const webpush = require('web-push');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const pool = require('./data/config');
+const mysql_pool = require('./data/config_mysql');
+const postgres_pool = require('./data/config_postgres')
 const base64 = require('base-64');
 
 const app = express();
@@ -25,9 +26,20 @@ app.get('/', (req, res) => {
 
 app.post('/api/send-push-subscription', (req, res) => {
   const sub = req.body.sub;
-  pool.query(`INSERT INTO Devices (Extras, UUID) VALUES ("${base64.encode(JSON.stringify(sub))}", "${req.body.uuid}")`, (error, result) => {
+  // mysql_pool.query(`INSERT INTO Devices (Extras, UUID) VALUES ("${base64.encode(JSON.stringify(sub))}", "${req.body.uuid}")`, (error, result) => {
+  //   if (error)
+  //   res.send(error)
+  //   else
+  //     res.send('Save sub ok')
+  // });
+  let query = `INSERT INTO public.devices (extras, uuid) VALUES ('${base64.encode(JSON.stringify(sub))}', '${req.body.uuid}')`;
+  postgres_pool.query(query, (error, result) => {
+    console.log(query)
     if (error)
-    res.send(error)
+    {
+      console.log(error)
+      res.send(error);
+    }
     else
       res.send('Save sub ok')
   });
@@ -42,12 +54,27 @@ app.post('/api/send-push-notification', (req, res) => {
   }
 
   console.log(payload)
-  pool.query('SELECT * FROM Devices', (error, result) => {
+  // mysql_pool.query('SELECT * FROM Devices', (error, result) => {
+  //   if (error) throw error;
+  //   console.log(result)
+  //   webpush.setVapidDetails('mailto:hnguyen48206@gmail.com', VAPIDKEY.publicKey, VAPIDKEY.privateKey);
+  //   for (let i = 0; i < result.length; ++i) {
+  //     webpush.sendNotification(JSON.parse(base64.decode(result[i].Extras)), JSON.stringify(payload)).then(res => {
+  //       console.log(res)
+  //     })
+  //       .catch(err => {
+  //         console.log(err)
+  //       });
+  //   }
+  //   res.send('Push OK');
+  // });
+
+  postgres_pool.query('SELECT * FROM public.devices', (error, result) => {
     if (error) throw error;
-    console.log(result)
+    console.log(result.rows)
     webpush.setVapidDetails('mailto:hnguyen48206@gmail.com', VAPIDKEY.publicKey, VAPIDKEY.privateKey);
-    for (let i = 0; i < result.length; ++i) {
-      webpush.sendNotification(JSON.parse(base64.decode(result[i].Extras)), JSON.stringify(payload)).then(res => {
+    for (let i = 0; i < result.rows.length; ++i) {
+      webpush.sendNotification(JSON.parse(base64.decode(result.rows[i].extras)), JSON.stringify(payload)).then(res => {
         console.log(res)
       })
         .catch(err => {
@@ -56,6 +83,7 @@ app.post('/api/send-push-notification', (req, res) => {
     }
     res.send('Push OK');
   });
+
 });
 
 // console.log(webpush.generateVAPIDKeys());
